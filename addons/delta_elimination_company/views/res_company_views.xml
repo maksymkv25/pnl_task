@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_company_form_delta_consolidation" model="ir.ui.view">
+        <field name="name">res.company.form.delta.consolidation</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_info']" position="after">
+                <page string="Consolidation" name="delta_consolidation" groups="account.group_account_manager">
+                    <group>
+                        <group>
+                            <field name="delta_is_consolidation_company"/>
+                            <field name="delta_member_company_ids" widget="many2many_tags"
+                                   invisible="not delta_is_consolidation_company"/>
+                        </group>
+                        <group invisible="not delta_is_consolidation_company">
+                            <field name="delta_elimination_journal_id" readonly="1"/>
+                            <field name="delta_difference_account_id" readonly="1"/>
+                            <field name="delta_horizontal_group_id" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_delta_group_report_form" model="ir.ui.view">
+        <field name="name">delta.group.report.form</field>
+        <field name="model">delta.group.report</field>
+        <field name="arch" type="xml">
+            <form string="Group Results">
+                <group>
+                    <field name="group_id"/>
+                    <field name="date_from" string="Month (any day)"/>
+                    <field name="include_draft"/>
+                    <field name="document_id"/>
+                </group>
+                <footer>
+                    <button name="action_generate" type="object" string="Show" class="btn-primary"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_delta_group_report" model="ir.actions.act_window">
+        <field name="name">Group Results</field>
+        <field name="res_model">delta.group.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_delta_group_report_line_pivot" model="ir.ui.view">
+        <field name="name">delta.group.report.line.pivot</field>
+        <field name="model">delta.group.report.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Group Results" disable_linking="1">
+                <field name="statement" type="row"/>
+                <field name="section" type="row"/>
+                <field name="account_label" type="row"/>
+                <field name="column" type="col"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_delta_group_report_line_list" model="ir.ui.view">
+        <field name="name">delta.group.report.line.list</field>
+        <field name="model">delta.group.report.line</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="statement"/>
+                <field name="section"/>
+                <field name="account_label"/>
+                <field name="column"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="local_currency_id" column_invisible="1"/>
+                <field name="amount_local" string="Standalone (own currency)"/>
+                <field name="amount" sum="Total"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_delta_group_report_line_search" model="ir.ui.view">
+        <field name="name">delta.group.report.line.search</field>
+        <field name="model">delta.group.report.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="account_label"/>
+                <field name="column"/>
+                <filter name="pnl" string="Profit and Loss" domain="[('statement', '=', 'pnl')]"/>
+                <filter name="bs" string="Balance Sheet" domain="[('statement', '=', 'bs')]"/>
+                <group>
+                    <filter name="groupby_statement" string="Statement" context="{'group_by': 'statement'}"/>
+                    <filter name="groupby_section" string="Section" context="{'group_by': 'section'}"/>
+                    <filter name="groupby_account" string="Account" context="{'group_by': 'account_label'}"/>
+                    <filter name="groupby_column" string="Company" context="{'group_by': 'column'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

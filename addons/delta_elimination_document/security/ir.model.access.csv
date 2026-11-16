@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_delta_consolidation_group_manager,delta.consolidation.group manager,model_delta_consolidation_group,account.group_account_manager,1,1,1,1
+access_delta_consolidation_group_readonly,delta.consolidation.group readonly,model_delta_consolidation_group,account.group_account_readonly,1,0,0,0
+access_delta_elimination_document_manager,delta.elimination.document manager,model_delta_elimination_document,account.group_account_manager,1,1,1,1
+access_delta_elimination_document_readonly,delta.elimination.document readonly,model_delta_elimination_document,account.group_account_readonly,1,0,0,0
+access_delta_elimination_document_line_manager,delta.elimination.document.line manager,model_delta_elimination_document_line,account.group_account_manager,1,1,1,1
+access_delta_elimination_document_line_readonly,delta.elimination.document.line readonly,model_delta_elimination_document_line,account.group_account_readonly,1,0,0,0
+access_delta_group_report_readonly,delta.group.report readonly,model_delta_group_report,account.group_account_readonly,1,1,1,1
+access_delta_group_report_line_readonly,delta.group.report.line readonly,model_delta_group_report_line,account.group_account_readonly,1,1,1,1

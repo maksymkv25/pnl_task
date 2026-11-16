@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_delta_elimination" model="ir.ui.view">
+        <field name="name">account.move.form.delta.elimination</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='line_ids']/list/field[@name='partner_id']" position="after">
+                <field name="delta_elim_company_id" optional="hide"
+                       column_invisible="not parent.delta_elimination_period_id"/>
+                <field name="delta_counterpart_company_id" optional="hide"
+                       column_invisible="not parent.delta_elimination_period_id"/>
+            </xpath>
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="delta_elimination_period_id" invisible="not delta_elimination_period_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_delta_elimination_document_list" model="ir.ui.view">
+        <field name="name">delta.elimination.document.list</field>
+        <field name="model">delta.elimination.document</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="group_id"/>
+                <field name="date_from" widget="date"/>
+                <field name="pnl_elimination"/>
+                <field name="difference_amount"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" widget="badge" decoration-success="state == 'confirmed'" decoration-info="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_delta_elimination_document_form" model="ir.ui.view">
+        <field name="name">delta.elimination.document.form</field>
+        <field name="model">delta.elimination.document</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_compute" type="object" string="Compute" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_confirm" type="object" string="Approve"
+                            invisible="state != 'draft'" groups="account.group_account_manager"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft"
+                            invisible="state != 'confirmed'" groups="account.group_account_manager"/>
+                    <button name="action_print" type="object" string="Print"/>
+                    <button name="action_open_group_report" type="object" string="Group Results"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="group_id" readonly="state != 'draft'"/>
+                            <field name="date_from" readonly="state != 'draft'"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="pnl_elimination"/>
+                            <field name="difference_amount"/>
+                            <field name="computed_on"/>
+                            <field name="approved_by_id"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" readonly="1">
+                        <list>
+                            <field name="line_type"/>
+                            <field name="company_id"/>
+                            <field name="counterpart_company_id"/>
+                            <field name="label"/>
+                            <field name="currency_id" column_invisible="1"/>
+                            <field name="debit" sum="Total"/>
+                            <field name="credit" sum="Total"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_delta_elimination_document_search" model="ir.ui.view">
+        <field name="name">delta.elimination.document.search</field>
+        <field name="model">delta.elimination.document</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="group_id"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="confirmed" string="Approved" domain="[('state', '=', 'confirmed')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_delta_elimination_document" model="ir.actions.act_window">
+        <field name="name">Elimination Documents</field>
+        <field name="res_model">delta.elimination.document</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create the elimination document of a month</p>
+            <p>Compute it, check the lines, approve it. The group results then use it.
+               Nothing is posted in any company's books.</p>
+        </field>
+    </record>
+</odoo>

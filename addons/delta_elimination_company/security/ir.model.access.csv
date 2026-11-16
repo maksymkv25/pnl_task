@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_delta_elimination_period_manager,delta.elimination.period manager,model_delta_elimination_period,account.group_account_manager,1,1,1,1
+access_delta_elimination_period_readonly,delta.elimination.period readonly,model_delta_elimination_period,account.group_account_readonly,1,0,0,0

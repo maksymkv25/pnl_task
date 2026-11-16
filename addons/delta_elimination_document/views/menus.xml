@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_delta_elimination_document" name="Elimination Documents"
+              parent="account.account_closing_menu" action="action_delta_elimination_document" sequence="90"/>
+    <menuitem id="menu_delta_group_report" name="Group Results"
+              parent="account.account_reports_legal_statements_menu" action="action_delta_group_report" sequence="90"/>
+    <menuitem id="menu_delta_consolidation_group" name="Consolidation Groups"
+              parent="account.account_account_menu" action="action_delta_consolidation_group" sequence="90"/>
+</odoo>

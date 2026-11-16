@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_elimination_document" model="ir.actions.report">
+        <field name="name">Elimination Document</field>
+        <field name="model">delta.elimination.document</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">delta_elimination_document.report_elimination_document</field>
+        <field name="report_file">delta_elimination_document.report_elimination_document</field>
+        <field name="print_report_name">'Eliminations - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_delta_elimination_document"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_elimination_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Intercompany Eliminations <span t-field="doc.name"/></h2>
+                        <p>
+                            Group: <strong t-field="doc.group_id.name"/> &#8212;
+                            Month: <strong t-esc="doc.date_from.strftime('%Y-%m')"/> &#8212;
+                            Currency: <span t-field="doc.currency_id.name"/> &#8212;
+                            Status: <span t-field="doc.state"/>
+                            <t t-if="doc.approved_by_id"> by <span t-field="doc.approved_by_id.name"/></t>
+                        </p>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Type</th><th>Company</th><th>Counterpart</th><th>Account</th>
+                                    <th class="text-end">Debit</th><th class="text-end">Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.line_ids" t-as="line">
+                                    <td><span t-field="line.line_type"/></td>
+                                    <td><span t-field="line.company_id.name"/></td>
+                                    <td><span t-field="line.counterpart_company_id.name"/></td>
+                                    <td><span t-esc="line.label"/></td>
+                                    <td class="text-end"><span t-field="line.debit"/></td>
+                                    <td class="text-end"><span t-field="line.credit"/></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4"><strong>Total</strong></td>
+                                    <td class="text-end"><strong t-esc="sum(doc.line_ids.mapped('debit'))"
+                                        t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                    <td class="text-end"><strong t-esc="sum(doc.line_ids.mapped('credit'))"
+                                        t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

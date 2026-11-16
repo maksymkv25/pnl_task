@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_delta_elimination_period_list" model="ir.ui.view">
+        <field name="name">delta.elimination.period.list</field>
+        <field name="model">delta.elimination.period</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="date_from" widget="date"/>
+                <field name="date_to"/>
+                <field name="move_id"/>
+                <field name="difference_amount"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_delta_elimination_period_form" model="ir.ui.view">
+        <field name="name">delta.elimination.period.form</field>
+        <field name="model">delta.elimination.period</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_run" type="object" string="Run Eliminations" class="btn-primary"
+                            invisible="state == 'done'"/>
+                    <button name="action_run" type="object" string="Recompute"
+                            invisible="state != 'done'"
+                            confirm="The elimination entry of this month and of every later month will be recomputed. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_move" type="object" class="oe_stat_button" icon="fa-book"
+                                invisible="not move_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Elimination Entry</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" readonly="move_id"/>
+                            <field name="date_from" readonly="move_id"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="move_id"/>
+                            <field name="difference_amount"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="move_line_ids" readonly="1">
+                        <list>
+                            <field name="account_id"/>
+                            <field name="name"/>
+                            <field name="delta_elim_company_id"/>
+                            <field name="delta_counterpart_company_id"/>
+                            <field name="debit" sum="Total"/>
+                            <field name="credit" sum="Total"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_delta_elimination_period" model="ir.actions.act_window">
+        <field name="name">Intercompany Eliminations</field>
+        <field name="res_model">delta.elimination.period</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create an elimination period for a month</p>
+            <p>Running a period posts one elimination entry in the consolidation company.
+               Then open the Profit and Loss or Balance Sheet with the consolidation company
+               and its members selected to see the group figures.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_delta_elimination_period" name="Intercompany Eliminations"
+              parent="account.account_closing_menu" action="action_delta_elimination_period" sequence="80"
+              groups="account.group_account_readonly"/>
+</odoo>
